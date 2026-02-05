@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="UTF-8">
+<title>Крізь роки разом</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+
+<style>
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    background: #d6d6d6; /* світло-сірий */
+    color: #333;
+}
+
+h1 {
+    text-align: center;
+    padding: 40px 20px 20px;
+    font-weight: 600;
+}
+
+.gallery {
+    padding: 40px;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 20px;
+}
+
+.gallery img,
+.gallery video {
+    width: 100%;
+    border-radius: 14px;
+    background: #bdbdbd;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.25);
+    cursor: pointer;
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.gallery img:hover,
+.gallery video:hover {
+    transform: scale(1.05);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.35);
+}
+
+/* LIGHTBOX */
+#lightbox {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.85);
+    justify-content: center;
+    align-items: center;
+    z-index: 999;
+}
+
+#lightbox img {
+    max-width: 90%;
+    max-height: 90%;
+    border-radius: 16px;
+}
+
+#close {
+    position: absolute;
+    top: 20px;
+    right: 30px;
+    font-size: 36px;
+    color: #fff;
+    cursor: pointer;
+}
+</style>
+</head>
+
+<body>
+
+<h1>Фото та відео альбом<br>«Крізь роки разом»</h1>
+
+<div class="gallery" id="gallery"></div>
+
+<!-- LIGHTBOX -->
+<div id="lightbox">
+    <span id="close">&times;</span>
+    <img id="lightbox-img">
+</div>
+
+<script>
+// ====== СПИСКИ ФАЙЛІВ ======
+const photos = [];
+for (let i = 1; i <= 222; i++) {
+    photos.push(i + '.jpg');
+}
+
+const videos = [];
+for (let i = 1; i <= 64; i++) {
+    videos.push(i + '.mp4');
+}
+
+// ====== ПЕРЕМІШУЄМО ======
+const items = [...photos, ...videos].sort(() => Math.random() - 0.5);
+
+// ====== ГАЛЕРЕЯ ======
+const gallery = document.getElementById('gallery');
+
+items.forEach(file => {
+    if (file.endsWith('.jpg')) {
+        const img = document.createElement('img');
+        img.src = file;
+        img.onclick = () => openLightbox(file);
+        gallery.appendChild(img);
+    }
+
+    if (file.endsWith('.mp4')) {
+        const video = document.createElement('video');
+        video.controls = true;
+        video.src = file;
+        gallery.appendChild(video);
+    }
+});
+
+// ====== LIGHTBOX ======
+function openLightbox(src) {
+    document.getElementById('lightbox-img').src = src;
+    document.getElementById('lightbox').style.display = 'flex';
+}
+
+document.getElementById('close').onclick = () => {
+    document.getElementById('lightbox').style.display = 'none';
+};
+
+document.getElementById('lightbox').onclick = e => {
+    if (e.target.id === 'lightbox') {
+        document.getElementById('lightbox').style.display = 'none';
+    }
+};
+</script>
+
+</body>
+</html>
